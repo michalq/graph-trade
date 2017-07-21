@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * This file is just a sandbox.
+ * This file is whole concept.
  */
 
 // Available pairs.

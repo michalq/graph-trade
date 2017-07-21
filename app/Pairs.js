@@ -1,10 +1,14 @@
 
 class Pairs {
     constructor() {
-        this.pairs = [];
+        this.pairs = {};
     }
 
-    addPair() {
+    /**
+     * @param {Pair} pair
+     */
+    addPair(pair) {
+        this.pairs[pair.getBuyCurrency() + "_" + pair.getSellCurrency()] = pair;
         return this;
     }
 }
