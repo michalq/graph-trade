@@ -1,5 +1,9 @@
 "use strict";
 
+/**
+ * This file is just a sandbox.
+ */
+
 // Available pairs.
 const pairs = {
     "btc_usd": {
@@ -22,14 +26,14 @@ const pairs = {
 // Account balance.
 const balance = {
     btc: {
-        balance: 0,
+        balance: 0
     },
     usd: {
-        balance: 2513,
+        balance: 2513
     },
     ltc: {
-        balance: 0,
-    },
+        balance: 0
+    }
 };
 
 // Strategy.

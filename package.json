@@ -1,0 +1,16 @@
+{
+  "name": "graph-trade",
+  "version": "1.0.0",
+  "description": "Graph trade is looking for best path to make trades in cryptocurrencies market.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/michal_/graphtrade.git"
+  },
+  "author": "Michał Kutrzeba, kutrzeba.michal@gmail.com",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/michal_/graphtrade#readme"
+}
