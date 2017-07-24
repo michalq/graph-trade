@@ -80,6 +80,26 @@ class Pair {
     getDecimalPlaces() {
         return this.decimalPlaces;
     }
+
+    /**
+     * Sets fee in percent.
+     *
+     * @param {Float} fee
+     */
+    setFeePercent(fee) {
+        this.fee = fee;
+
+        return this;
+    }
+
+    /**
+     * Returns fee in percent.
+     *
+     * @return {Float}
+     */
+    getFeePercent() {
+        return this.fee;
+    }
 }
 
 module.exports = Pair;
