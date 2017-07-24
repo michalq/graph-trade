@@ -4,7 +4,7 @@ const Relation = require('./Relation');
  * Class saves all relations among pairs.
  */
 class Relations {
-    constructor() {
+    constructor(relationCollection) {
         this.relations = {};
     }
 

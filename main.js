@@ -4,7 +4,9 @@ const InfoService = require('../modules/btceClient/Info'),
     TickerService = require('../modules/btceClient/Ticker'),
     PairsCollection = require('./app/Pairs'),
     RelationsCollection = require('./app/Relations'),
-    PairEntity = require('./app/Pair');
+    PairEntity = require('./app/Pair'),
+    PathFinder = require('./app/PathFinder'),
+    Calculator = require('./app/Calculator');
 
 
 let pairsCollection = new PairsCollection;
@@ -55,6 +57,13 @@ InfoService.fetch()
         return Promise.all(tickersPromises);
     })
     .then((data) => {
+        const pathFinder = new PathFinder(relationsCollection);
+        pathFinder.setInitial('btc');
+        pathFinder.setDestination('btc');
+        pathFinder.findPaths();
+
+        const calculator = new Calculator(pairsCollection, pathFinder.getPaths()[0]);
+
         console.log(relationsCollection.getRelation('btc').getBuyPossibilities());
     })
     .catch((err) => {
