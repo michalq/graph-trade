@@ -41,12 +41,24 @@ class PathFinder {
      * @return {PathFinder}
      */
     findPaths(sellCurrency, state) {
-        this.relations.getRelation(sellCurrency).getBuyPossibilities()
+        this.relations
+            .getRelation(sellCurrency)
+            .getBuyPossibilities()[state.buyCurrentIndex]
+            .forEach((el) => {
+                state.currentIndex++;
+                this.findPaths(el, state)
+            });
         return this;
     }
 
     init() {
-        this.findPaths(this.initial, {buyCurrentIndex: 0});
+        this.findPaths(
+            this.initial,
+            {
+                currentIndex: 0,
+                path: []
+            }
+        );
     }
 
     /**
