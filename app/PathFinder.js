@@ -40,8 +40,13 @@ class PathFinder {
      *
      * @return {PathFinder}
      */
-    findPaths() {
+    findPaths(sellCurrency, state) {
+        this.relations.getRelation(sellCurrency).getBuyPossibilities()
         return this;
+    }
+
+    init() {
+        this.findPaths(this.initial, {buyCurrentIndex: 0});
     }
 
     /**
