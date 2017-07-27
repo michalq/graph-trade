@@ -31,7 +31,7 @@ class PathFinder {
      *
      * @return {PathFinder} this
      */
-    setDestication(destination) {
+    setDestination(destination) {
         this.destination = destination;
     }
 
@@ -43,7 +43,7 @@ class PathFinder {
     findPaths(sellCurrency, state) {
         this.relations
             .getRelation(sellCurrency)
-            .getBuyPossibilities()[state.buyCurrentIndex]
+            .getBuyPossibilities('btc')[state.buyCurrentIndex]
             .forEach((el) => {
                 state.currentIndex++;
                 this.findPaths(el, state)

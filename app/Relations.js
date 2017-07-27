@@ -36,6 +36,15 @@ class Relations {
 
         return this;
     }
+
+    /**
+     * Returns amount of relations.
+     *
+     * @return {Int}
+     */
+    count() {
+        return Object.keys(this.relations).length;
+    }
 }
 
 module.exports = Relations;
