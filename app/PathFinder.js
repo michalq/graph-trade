@@ -43,22 +43,41 @@ class PathFinder {
     findPaths(sellCurrency, state) {
         this.relations
             .getRelation(sellCurrency)
-            .getBuyPossibilities('btc')[state.buyCurrentIndex]
+            .getBuyPossibilities()
             .forEach((el) => {
-                state.currentIndex++;
+                if (this.initial === sellCurrency) {
+                    state[el] = {
+                        path: [],
+                        currencies: []
+                    };
+
+                    state = state[el];
+                }
+
+                state.path.push(el + '_' + sellCurrency);
+                state.currencies.push(el);
+
+                if (this.initial === el) {
+                    return;
+                }
+
+                if (state.currencies.indexOf(el)) {
+                    return;
+                }
+
                 this.findPaths(el, state)
             });
         return this;
     }
 
     init() {
+        const paths = {};
         this.findPaths(
             this.initial,
-            {
-                currentIndex: 0,
-                path: []
-            }
+            paths
         );
+
+        console.log('test', paths);
     }
 
     /**

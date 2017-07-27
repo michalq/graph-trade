@@ -68,11 +68,11 @@ Promise.all([
 
     pathFinder.setInitial('btc');
     pathFinder.setDestination('btc');
-    // pathFinder.findPaths();
+    pathFinder.init();
 
     const calculator = new Calculator(pairsCollection, pathFinder.getPaths()[0]);
 
-    console.log(relationsCollection.getRelation('btc').getBuyPossibilities());
+    // console.log(relationsCollection.getRelation('btc').getBuyPossibilities());
 })
 .catch(err => {
     console.error(err);
