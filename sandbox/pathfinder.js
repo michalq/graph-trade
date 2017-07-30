@@ -21,10 +21,6 @@ function findPaths(sellCurrency, state) {
                 newState = state[el];
             }
 
-            if (typeof newState.path == 'undefined') {
-                console.log('undefined?', newState);
-                return;
-            }
             newState.path.push(sellCurrency + '_' + el);
             newState.currencies.push(el);
 
@@ -36,7 +32,11 @@ function findPaths(sellCurrency, state) {
                 return;
             }
 
-            findPaths(el, state)
+            if (initial === sellCurrency) {
+                findPaths(el, newState);
+            } else {
+                findPaths(el, state);
+            }
         });
     return this;
 }
