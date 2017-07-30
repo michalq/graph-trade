@@ -54,7 +54,7 @@ class PathFinder {
                     state = state[el];
                 }
 
-                state.path.push(el + '_' + sellCurrency);
+                state.path.push(sellCurrency + '_' + el);
                 state.currencies.push(el);
 
                 if (this.initial === el) {

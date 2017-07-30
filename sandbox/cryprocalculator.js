@@ -55,7 +55,6 @@ const strategy = {
 };
 
 // Algorithm.
-
 let currentStrategy,
     price,
     amountToBuy,
