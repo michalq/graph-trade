@@ -11,23 +11,28 @@ const initial = "btc";
 function findPaths(sellCurrency, state) {
     paths[sellCurrency]
         .forEach((el) => {
+            let newState = state;
             if (initial === sellCurrency) {
                 state[el] = {
                     path: [],
                     currencies: []
                 };
 
-                state = state[el];
+                newState = state[el];
             }
 
-            state.path.push(sellCurrency + '_' + el);
-            state.currencies.push(el);
+            if (typeof newState.path == 'undefined') {
+                console.log('undefined?', newState);
+                return;
+            }
+            newState.path.push(sellCurrency + '_' + el);
+            newState.currencies.push(el);
 
             if (initial === el) {
                 return;
             }
 
-            if (state.currencies.indexOf(el)) {
+            if (newState.currencies.indexOf(el)) {
                 return;
             }
 
