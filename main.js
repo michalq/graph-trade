@@ -70,7 +70,27 @@ Promise.all([
     pathFinder.setDestination('btc');
     pathFinder.init();
 
-    const calculator = new Calculator(pairsCollection, pathFinder.getPaths()[0]);
+    // Run calculator.
+    let calculator,
+        balance;
+    const foundPaths = pathFinder.getPaths();
+
+    for (let i = 0; i < foundPaths.length; i++) {
+        balance = {btc: 1};
+        calculator = new Calculator(
+            pairsCollection,
+            foundPaths[i],
+            balance
+        );
+        calculator.setDebug(true);
+
+        calculator.init();
+        if (balance.btc > 1) {
+            console.log('YAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+            console.log(calculator.getDebugLogs());
+            console.log(balance);
+        }
+    }
 
     // console.log(relationsCollection.getRelation('btc').getBuyPossibilities());
 })

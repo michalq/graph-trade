@@ -11,6 +11,10 @@ class Pairs {
         this.pairs[pair.getBuyCurrency() + "_" + pair.getSellCurrency()] = pair;
         return this;
     }
+
+    getPair(pair) {
+        return this.pairs[pair];
+    }
 }
 
 module.exports = Pairs;

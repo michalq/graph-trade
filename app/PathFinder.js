@@ -40,44 +40,50 @@ class PathFinder {
      *
      * @return {PathFinder}
      */
-    findPaths(sellCurrency, state) {
+    searchPath(sellCurrency, state) {
         this.relations
             .getRelation(sellCurrency)
             .getBuyPossibilities()
             .forEach((el) => {
-                if (this.initial === sellCurrency) {
-                    state[el] = {
-                        path: [],
-                        currencies: []
-                    };
-
-                    state = state[el];
+                const newState = JSON.parse(JSON.stringify(state));
+                if (-1 !== newState.currencies.indexOf(el)) {
+                    return;
                 }
 
-                state.path.push(sellCurrency + '_' + el);
-                state.currencies.push(el);
+                newState.path.push({
+                    pair: sellCurrency + '_' + el,
+                    sell: sellCurrency,
+                    buy: el
+                });
+
+                newState.currencies.push(el);
 
                 if (this.initial === el) {
+                    this.paths.push(newState);
                     return;
                 }
 
-                if (state.currencies.indexOf(el)) {
-                    return;
-                }
-
-                this.findPaths(el, state)
+                this.searchPath(el, newState);
             });
+
         return this;
     }
 
+    /**
+     * Initialize alghorithm to look for available paths.
+     *
+     * @return {Bool}
+     */
     init() {
-        const paths = {};
-        this.findPaths(
+        this.searchPath(
             this.initial,
-            paths
+            {
+                path: [],
+                currencies: []
+            }
         );
 
-        console.log('test', paths);
+        return this;
     }
 
     /**
