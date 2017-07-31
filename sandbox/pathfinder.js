@@ -7,44 +7,37 @@ const paths = {
 };
 const initial = "btc";
 
+const foundPaths = [];
 
 function findPaths(sellCurrency, state) {
     paths[sellCurrency]
         .forEach((el) => {
-            let newState = state;
-            if (initial === sellCurrency) {
-                state[el] = {
-                    path: [],
-                    currencies: []
-                };
+            const newState = JSON.parse(JSON.stringify(state));
 
-                newState = state[el];
+            if (-1 !== newState.currencies.indexOf(el)) {
+                return;
             }
 
             newState.path.push(sellCurrency + '_' + el);
             newState.currencies.push(el);
 
             if (initial === el) {
+                foundPaths.push(newState);
                 return;
             }
 
-            if (newState.currencies.indexOf(el)) {
-                return;
-            }
-
-            if (initial === sellCurrency) {
-                findPaths(el, newState);
-            } else {
-                findPaths(el, state);
-            }
+            findPaths(el, newState);
         });
-    return this;
+
+    return foundPaths;
 }
 
-const finds = {};
 findPaths(
     initial,
-    finds
+    {
+        path: [],
+        currencies: []
+    }
 );
 
-console.log(finds);
+console.log(foundPaths);
