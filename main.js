@@ -8,7 +8,6 @@ const InfoService = require('../modules/bterClient/Info'),
     PathFinder = require('./app/PathFinder'),
     Calculator = require('./app/Calculator');
 
-
 const pairsCollection = new PairsCollection;
 const relationsCollection = new RelationsCollection;
 
@@ -72,7 +71,10 @@ Promise.all([
 
     // Run calculator.
     let calculator,
-        balance;
+        balance,
+        counter = 0,
+        optimalPaths = [];
+
     const foundPaths = pathFinder.getPaths();
 
     for (let i = 0; i < foundPaths.length; i++) {
@@ -86,13 +88,17 @@ Promise.all([
 
         calculator.init();
         if (balance.btc > 1) {
-            console.log('YAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-            console.log(calculator.getDebugLogs());
-            console.log(balance);
+            counter++;
+            optimalPaths.push(calculator);
+            // console.log('Found optimal path to trade.');
+            // console.log(calculator.getDebugLogs());
+            // console.log(balance);
         }
     }
 
-    // console.log(relationsCollection.getRelation('btc').getBuyPossibilities());
+    if (0 <= counter) {
+        console.log('Nothing found :(');
+    }
 })
 .catch(err => {
     console.error(err);

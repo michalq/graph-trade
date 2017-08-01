@@ -3,16 +3,49 @@
  */
 class Calculator {
     /**
-     *
      * @param {Pairs} pairsCollection
      * @param {Path} path
+     * @param {Object} initialBalance
      */
-    constructor(pairsCollection, path, balance) {
+    constructor(pairsCollection, path, initialBalance) {
+        if (typeof initialBalance !== 'object') {
+            throw new Error('Initial balance should be object.');
+        }
+
+        const currencies = Object.keys(initialBalance);
+        if (currencies.length > 1) {
+            throw new Error('Initial balance should have only one currency.');
+        }
+
+        /** @type {Object} */
+        this.testedCurrency = currencies[0];
+
+        /** @type {Pairs} Available pairs. */
         this.pairs = pairsCollection;
+
+        /** @type {Path} Trade path. */
         this.path = path;
-        this.balance = balance;
+
+        /** @type {Object} Balance that after run script may change. */
+        this.balance = initialBalance;
+
+        /** @type {Object} Initial balance. doesn't change after run script. */
+        this.initialBalance = Object.assign({}, initialBalance);
+
+        /** @type {Boolean} Should be stored debug logs. */
         this.debugMode = false;
+
+        /** @type {Array} Debug logs. */
         this.debugLogs = [];
+    }
+
+    /**
+     * Is path valuable.
+     *
+     * @return {Boolean}
+     */
+    isPathValuable() {
+        return this.balance[this.testedCurrency] > this.initialBalance[this.testedCurrency];
     }
 
     /**
@@ -23,6 +56,7 @@ class Calculator {
      */
     setDebug(debugMode) {
         this.debugMode = debugMode;
+
         return this;
     }
 
@@ -35,6 +69,29 @@ class Calculator {
         return this.debugLogs;
     }
 
+    /**
+     * Returns initial before calculation.
+     *
+     * @return {Object}
+     */
+    getInitialBalance() {
+        return this.initialBalance;
+    }
+
+    /**
+     * Returns balance.
+     *
+     * @return {Object}
+     */
+    getBalance() {
+        return this.balance;
+    }
+
+    /**
+     * Run calculation.
+     *
+     * @return {this}
+     */
     init() {
         let price,
             amountToBuy,
@@ -72,6 +129,8 @@ class Calculator {
                 );
             }
         }
+
+        return this;
     }
 }
 
