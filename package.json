@@ -12,5 +12,9 @@
   },
   "author": "Michał Kutrzeba, kutrzeba.michal@gmail.com",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/michal_/graphtrade#readme"
+  "homepage": "https://bitbucket.org/michal_/graphtrade#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3"
+  }
 }

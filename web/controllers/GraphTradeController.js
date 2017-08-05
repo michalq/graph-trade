@@ -1,19 +1,29 @@
 "use strict";
 
+const BaseController = require('./BaseController');
+
 /**
  *
  */
-class GraphTradeController {
-    constructor(res, req) {
-        this.res = res;
-        this.req = req;
-    }
-
+class GraphTradeController extends BaseController {
     /**
      *
      */
     pairsAction() {
-        //
+        this.res.statusCode = 200;
+        this.res.json({
+            data: {}
+        });
+    }
+
+    /**
+     * Returns paths.
+     */
+    pathsAction() {
+        this.res.statusCode = 200;
+        this.res.json({
+            data: {}
+        });
     }
 }
 

@@ -1,15 +1,15 @@
 "use strict";
-// @deprecated
+
 const InfoService = require('../../modules/bterClient/Info'),
     TickersService = require('../../modules/bterClient/Tickers'),
-    PairsCollection = require('../app/Pairs'),
-    RelationsCollection = require('../app/Relations'),
-    PairEntity = require('../app/Pair'),
-    PathFinder = require('../app/PathFinder'),
-    Calculator = require('../app/Calculator');
+    PairsCollection = require('./app/Pairs'),
+    RelationsCollection = require('./app/Relations'),
+    PairEntity = require('./app/Pair'),
+    PathFinder = require('./app/PathFinder'),
+    Calculator = require('./app/Calculator');
 
 // Errors
-const PriceLeqZero = require('../app/errors/PriceLeqZero');
+const PriceLeqZero = require('./app/errors/PriceLeqZero');
 
 const pairsCollection = new PairsCollection;
 const relationsCollection = new RelationsCollection;
