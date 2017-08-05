@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Find possibile paths.
  */

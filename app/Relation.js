@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Relation keeps owning currency
  */

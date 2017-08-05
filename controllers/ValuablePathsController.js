@@ -8,6 +8,9 @@ const InfoService = require('../../modules/bterClient/Info'),
     PathFinder = require('../app/PathFinder'),
     Calculator = require('../app/Calculator');
 
+// Errors
+const PriceLeqZero = require('../app/errors/PriceLeqZero');
+
 const pairsCollection = new PairsCollection;
 const relationsCollection = new RelationsCollection;
 
@@ -85,7 +88,18 @@ module.exports = Promise.all([
         );
         calculator.setDebug(true);
 
-        calculator.init();
+        try {
+            calculator.init();
+        } catch(e) {
+            if (e instanceof PriceLeqZero) {
+                console.log(e.message);
+            } else {
+                throw e;
+            }
+
+            continue;
+        }
+
         if (calculator.isPathValuable()) {
             valuablePaths.push(calculator);
         }

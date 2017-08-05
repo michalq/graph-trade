@@ -14,8 +14,12 @@ valuablePaths
     for (let i = 0; i < paths.length; i++) {
         calculator = paths[i];
 
-        console.log(calculator.getDebugLogs());
-        console.log(calculator.getBalance());
+        try {
+            console.log(calculator.getDebugLogs());
+            console.log(calculator.getBalance());
+        } catch (e) {
+            console.log(e);
+        }
     }
 })
 .catch(err => {

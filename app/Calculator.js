@@ -1,3 +1,6 @@
+const PriveNotValidError = require('./errors/PriceNotValidError'),
+    PriceLeqZero = require('./errors/PriceLeqZero');
+
 /**
  *
  */
@@ -97,23 +100,29 @@ class Calculator {
             amountToBuy,
             totalPrice,
             currentStrategy,
-            pair;
+            pair,
+            pairName,
+            decimalMask;
 
         for (let i = 0; i < this.path.path.length; i++) {
             currentStrategy = this.path.path[i];
 
-            pair = this.pairs.getPair(currentStrategy.buy + '_' + currentStrategy.sell);
+            pairName = currentStrategy.buy + '_' + currentStrategy.sell;
+            pair = this.pairs.getPair(pairName);
             if (typeof pair === 'undefined') {
-                throw new Error('Pair [' + currentStrategy.buy + '_' + currentStrategy.sell + '] is not defined.');
+                throw new PriveNotValidError(pairName);
             }
 
             price = pair.getPrice();
             if (price <= 0) {
-                throw new Error('Price cannot be lass or equal 0.');
+                throw new PriceLeqZero(pair);
             }
 
             // Calculate how many can buy for that price.
             amountToBuy = this.balance[currentStrategy.sell] / price;
+            decimalMask = Math.pow(10, pair.getDecimalPlaces());
+            amountToBuy = Math.floor(amountToBuy * decimalMask) / decimalMask;
+
             totalPrice = price * amountToBuy;
 
             if (typeof this.balance[currentStrategy.buy] === 'undefined') {

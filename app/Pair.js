@@ -13,6 +13,15 @@ class Pair {
     }
 
     /**
+     * Returns human readable name for pair.
+     *
+     * @return {String}
+     */
+    getName() {
+        return this.buyCurrency + '_' + this.sellCurrency;
+    }
+
+    /**
      * Gets buy currency.
      *
      * @return {String}

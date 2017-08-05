@@ -1,4 +1,8 @@
+"use strict";
 
+/**
+ * Class represents pairs collection.
+ */
 class Pairs {
     constructor() {
         this.pairs = {};

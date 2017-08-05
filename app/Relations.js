@@ -1,3 +1,5 @@
+"use strict";
+
 const Relation = require('./Relation');
 
 /**
