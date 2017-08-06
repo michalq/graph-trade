@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cors = require('cors')
 
 // Get routes
 const apiv1 = require('./routes/apiv1');
@@ -10,6 +11,7 @@ const app = express();
 
 global.__base = __dirname;
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
