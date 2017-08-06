@@ -4,11 +4,11 @@ const express = require('express'),
 const GraphTradeController = require('../controllers/GraphTradeController');
 
 router.get('/pairs', (req, res, next) => {
-    console.log('/pairs - open');
+    (new GraphTradeController(req, res)).pairsAction();
 });
 
 router.get('/paths', (req, res, next) => {
-    console.log('/paths - open');
+    (new GraphTradeController(req, res)).pathsAction();
 });
 
 module.exports = router;

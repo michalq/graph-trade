@@ -43,6 +43,15 @@ class Calculator {
     }
 
     /**
+     * Returns path.
+     *
+     * @return {Array}
+     */
+    getPath() {
+        return this.path;
+    }
+
+    /**
      * Is path valuable.
      *
      * @return {Boolean}

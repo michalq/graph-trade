@@ -1,7 +1,7 @@
 
 class BaseController
 {
-    constructor(res, req) {
+    constructor(req, res) {
         this.res = res;
         this.req = req;
     }
