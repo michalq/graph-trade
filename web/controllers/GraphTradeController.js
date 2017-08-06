@@ -49,7 +49,8 @@ class GraphTradeController extends BaseController {
 
             this.res.statusCode = 200;
             return this.res.json({
-                data: result
+                paths: result,
+                errorLogs: []
             });
         })
         .catch(err => {
