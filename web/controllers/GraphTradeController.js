@@ -20,8 +20,8 @@ class GraphTradeController extends BaseController {
     /**
      * Returns paths.
      */
-    pathsAction() {
-        const graphTrade = new GraphTrade('btc', 1);
+    pathsAction(currency, initial) {
+        const graphTrade = new GraphTrade(currency, parseFloat(initial));
 
         graphTrade
         .init()

@@ -7,8 +7,8 @@ router.get('/pairs', (req, res, next) => {
     (new GraphTradeController(req, res)).pairsAction();
 });
 
-router.get('/paths', (req, res, next) => {
-    (new GraphTradeController(req, res)).pathsAction();
+router.get('/paths/initial/:initial/amount/:amount', (req, res, next) => {
+    (new GraphTradeController(req, res)).pathsAction(req.params.initial, req.params.amount);
 });
 
 module.exports = router;
