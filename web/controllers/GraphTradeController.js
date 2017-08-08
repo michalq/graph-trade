@@ -40,7 +40,8 @@ class GraphTradeController extends BaseController {
                         logs: calculator.getDebugLogs(),
                         balance: calculator.getBalance(),
                         path: calculator.getPath().path,
-                        currencies: calculator.getPath().currencies
+                        currencies: calculator.getPath().currencies,
+                        percentRevenue: Math.floor((calculator.getBalance()[currency] - initial / initial) * 10000) / 100
                     });
                 } catch (e) {
                     return this.displayInternalError(e.message);
