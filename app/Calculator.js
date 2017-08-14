@@ -143,6 +143,7 @@ class Calculator {
 
             currentStrategy.buyAmount = amountToBuy;
             currentStrategy.sellAmount = totalPrice;
+            currentStrategy.price = price;
 
             if (this.debugMode) {
                 this.debugLogs.push(
