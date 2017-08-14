@@ -141,6 +141,9 @@ class Calculator {
             this.balance[currentStrategy.sell] -= totalPrice;
             this.balance[currentStrategy.buy] += amountToBuy;
 
+            currentStrategy.buyAmount = amountToBuy;
+            currentStrategy.sellAmount = totalPrice;
+
             if (this.debugMode) {
                 this.debugLogs.push(
                     'Buying ' + amountToBuy + '[' + currentStrategy.buy + '] for ' + totalPrice + '[' + currentStrategy.sell + ']'
