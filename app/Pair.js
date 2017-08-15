@@ -2,6 +2,42 @@
 
 class Pair {
     /**
+     * @param {Currency} buyCurrency
+     *
+     * @return this
+     */
+    setBuyCurrencyEntity(buyCurrency) {
+        this.buyCurrencyEntity = buyCurrency;
+
+        return this;
+    }
+
+    /**
+     * @return {Currency}
+     */
+    getBuyCurrencyEntity() {
+        return this.buyCurrencyEntity;
+    }
+
+    /**
+     * @param {Currency} sellCurrency
+     *
+     * @return this
+     */
+    setSellCurrencyEntity(sellCurrency) {
+        this.sellCurrencyEntity = sellCurrency;
+
+        return this;
+    }
+
+    /**
+     * @return {Currency}
+     */
+    getSellCurrencyEntity() {
+        return this.sellCurrencyEntity;
+    }
+
+    /**
      * Sets buy currency.
      *
      * @param {String} buyCurrency

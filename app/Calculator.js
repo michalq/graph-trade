@@ -111,7 +111,8 @@ class Calculator {
             currentStrategy,
             pair,
             pairName,
-            decimalMask;
+            buyDecimalMask,
+            sellDecimalMask;
 
         for (let i = 0; i < this.path.path.length; i++) {
             currentStrategy = this.path.path[i];
@@ -128,11 +129,15 @@ class Calculator {
             }
 
             // Calculate how many can buy for that price.
+            sellDecimalMask = Math.pow(10, pair.getBuyCurrencyEntity().getDecimalPlaces());
+            price = Math.floor(price * sellDecimalMask) / sellDecimalMask;
+
+            buyDecimalMask = Math.pow(10, pair.getSellCurrencyEntity().getDecimalPlaces());
             amountToBuy = this.balance[currentStrategy.sell] / price;
-            decimalMask = Math.pow(10, pair.getDecimalPlaces());
-            amountToBuy = Math.floor(amountToBuy * decimalMask) / decimalMask;
+            amountToBuy = Math.floor(amountToBuy * buyDecimalMask) / buyDecimalMask;
 
             totalPrice = price * amountToBuy;
+            totalPrice = Math.floor(totalPrice * sellDecimalMask) / sellDecimalMask;
 
             if (typeof this.balance[currentStrategy.buy] === 'undefined') {
                 this.balance[currentStrategy.buy] = 0;

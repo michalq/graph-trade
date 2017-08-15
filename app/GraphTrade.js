@@ -5,6 +5,7 @@ const InfoService = require('../../modules/bterClient/Info'),
     PairsCollection = require('./Pairs'),
     RelationsCollection = require('./Relations'),
     PairEntity = require('./Pair'),
+    CurrencyEntity = require('./Currency'),
     PathFinder = require('./PathFinder'),
     Calculator = require('./Calculator');
 
@@ -41,19 +42,49 @@ class Wrapper {
         return this.fetchData().then(data => {
             // Prepare data.
             const apiMarketInfo = data[0],
-                apiTickers = data[1];
+                apiTickers = data[1],
+                currencies = [];
+
+            // Fill data about currencies.
+            for (let i = 0; i < apiMarketInfo.length; i++) {
+                const pairName = Object.keys(apiMarketInfo[i])[0],
+                    pairDetails = apiMarketInfo[i][pairName],
+                    currency = pairName.split('_')[1];
+
+                if (typeof currencies[currency] !== 'undefined') {
+                    continue;
+                }
+
+                currencies[currency] = new CurrencyEntity();
+                currencies[currency]
+                    .setName(currency)
+                    .setDecimalPlaces(pairDetails.decimal_places);
+            }
 
             for (let i = 0; i < apiMarketInfo.length; i++) {
                 let pairName = Object.keys(apiMarketInfo[i])[0],
                     pairDetails = apiMarketInfo[i][pairName],
                     ticker = apiTickers[pairName];
 
-                if (typeof ticker === 'undefined') continue;
+                if (typeof ticker === 'undefined') {
+                    console.log('Omitting ticker for pair ' + pairName + ' is undefined.');
+                    continue;
+                }
 
                 let buyCurrency = ticker.getBuyCurrency(),
                     sellCurrency = ticker.getSellCurrency(),
                     sellPrice = ticker.getSell(),
                     buyPrice = ticker.getBuy();
+
+                if (typeof currencies[buyCurrency] === 'undefined') {
+                    console.log('Cannot find details for [' + buyCurrency.toUpperCase() + '] currency.');
+                    continue;
+                }
+
+                if (typeof currencies[sellCurrency] === 'undefined') {
+                    console.log('Cannot find details for [' + sellCurrency.toUpperCase() + '] currency.');
+                    continue;
+                }
 
                 this.relationsCollection.addRelation(
                     buyCurrency,
@@ -67,7 +98,9 @@ class Wrapper {
 
                 this.pairsCollection.addPair((new PairEntity)
                     .setBuyCurrency(buyCurrency)
+                    .setBuyCurrencyEntity(currencies[buyCurrency])
                     .setSellCurrency(sellCurrency)
+                    .setSellCurrencyEntity(currencies[sellCurrency])
                     .setPrice(buyPrice)
                     .setDecimalPlaces(pairDetails.decimal_places)
                     .setFeePercent(pairDetails.fee)
@@ -75,7 +108,9 @@ class Wrapper {
 
                 this.pairsCollection.addPair((new PairEntity)
                     .setBuyCurrency(sellCurrency)
+                    .setBuyCurrencyEntity(currencies[sellCurrency])
                     .setSellCurrency(buyCurrency)
+                    .setSellCurrencyEntity(currencies[buyCurrency])
                     .setPrice(1 / sellPrice)
                     .setDecimalPlaces(pairDetails.decimal_places)
                     .setFeePercent(pairDetails.fee)
