@@ -5,6 +5,13 @@
  */
 class Currency {
 
+    constructor(data) {
+        if (typeof data === 'object') {
+            this.name = data.name;
+            this.decimalPlaces = data.decimalPlaces;
+        }
+    }
+
     /**
      * @param {String} name
      *

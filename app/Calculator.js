@@ -129,13 +129,12 @@ class Calculator {
             }
 
             // Calculate how many can buy for that price.
-            sellDecimalMask = Math.pow(10, pair.getBuyCurrencyEntity().getDecimalPlaces());
-            price = Math.floor(price * sellDecimalMask) / sellDecimalMask;
-
-            buyDecimalMask = Math.pow(10, pair.getSellCurrencyEntity().getDecimalPlaces());
+            buyDecimalMask = Math.pow(10, pair.getBuyCurrencyEntity().getDecimalPlaces());
             amountToBuy = this.balance[currentStrategy.sell] / price;
             amountToBuy = Math.floor(amountToBuy * buyDecimalMask) / buyDecimalMask;
 
+            // Only total price should be rounded.
+            sellDecimalMask = Math.pow(10, pair.getSellCurrencyEntity().getDecimalPlaces());
             totalPrice = price * amountToBuy;
             totalPrice = Math.floor(totalPrice * sellDecimalMask) / sellDecimalMask;
 

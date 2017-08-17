@@ -7,7 +7,8 @@ const InfoService = require('../../modules/bterClient/Info'),
     PairEntity = require('./Pair'),
     CurrencyEntity = require('./Currency'),
     PathFinder = require('./PathFinder'),
-    Calculator = require('./Calculator');
+    Calculator = require('./Calculator'),
+    Currencies = require('./Currencies');
 
 // Errors
 const PriceLeqZero = require('./errors/PriceLeqZero');
@@ -45,33 +46,8 @@ class Wrapper {
             // Prepare data.
             const apiMarketInfo = data[0],
                 apiTickers = data[1],
-                currencies = [];
-
-            // Fill data about currencies.
-            for (let i = 0; i < apiMarketInfo.length; i++) {
-                const pairName = Object.keys(apiMarketInfo[i])[0],
-                    pairDetails = apiMarketInfo[i][pairName],
-                    firstCurrency = pairName.split('_')[0],
-                    secondCurrency = pairName.split('_')[1];
-
-                if (typeof currencies[firstCurrency] !== 'undefined') {
-                    continue;
-                }
-
-                currencies[firstCurrency] = new CurrencyEntity();
-                currencies[firstCurrency]
-                    .setName(firstCurrency)
-                    .setDecimalPlaces(8);
-
-                if (typeof currencies[secondCurrency] !== 'undefined') {
-                    continue;
-                }
-
-                currencies[secondCurrency] = new CurrencyEntity();
-                currencies[secondCurrency]
-                    .setName(secondCurrency)
-                    .setDecimalPlaces(8);
-            }
+                currenciesCollection = new Currencies(),
+                currencies = currenciesCollection.get();
 
             //
             for (let i = 0; i < apiMarketInfo.length; i++) {
