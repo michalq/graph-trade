@@ -14,6 +14,8 @@ const PriceLeqZero = require('./errors/PriceLeqZero');
 
 /**
  * Wrap together whole algorithm.
+ *
+ * @todo this class is ugly and should be refactored.
  */
 class Wrapper {
     constructor(owningCurrency, amount) {
@@ -49,18 +51,29 @@ class Wrapper {
             for (let i = 0; i < apiMarketInfo.length; i++) {
                 const pairName = Object.keys(apiMarketInfo[i])[0],
                     pairDetails = apiMarketInfo[i][pairName],
-                    currency = pairName.split('_')[1];
+                    firstCurrency = pairName.split('_')[0],
+                    secondCurrency = pairName.split('_')[1];
 
-                if (typeof currencies[currency] !== 'undefined') {
+                if (typeof currencies[firstCurrency] !== 'undefined') {
                     continue;
                 }
 
-                currencies[currency] = new CurrencyEntity();
-                currencies[currency]
-                    .setName(currency)
-                    .setDecimalPlaces(pairDetails.decimal_places);
+                currencies[firstCurrency] = new CurrencyEntity();
+                currencies[firstCurrency]
+                    .setName(firstCurrency)
+                    .setDecimalPlaces(8);
+
+                if (typeof currencies[secondCurrency] !== 'undefined') {
+                    continue;
+                }
+
+                currencies[secondCurrency] = new CurrencyEntity();
+                currencies[secondCurrency]
+                    .setName(secondCurrency)
+                    .setDecimalPlaces(8);
             }
 
+            //
             for (let i = 0; i < apiMarketInfo.length; i++) {
                 let pairName = Object.keys(apiMarketInfo[i])[0],
                     pairDetails = apiMarketInfo[i][pairName],
