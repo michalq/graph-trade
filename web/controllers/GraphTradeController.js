@@ -21,7 +21,9 @@ class GraphTradeController extends BaseController {
      * Returns paths.
      */
     pathsAction(currency, initial) {
-        const graphTrade = new GraphTrade(currency, parseFloat(initial));
+        initial = parseFloat(initial);
+
+        const graphTrade = new GraphTrade(currency, initial);
 
         graphTrade
         .init()
@@ -41,7 +43,7 @@ class GraphTradeController extends BaseController {
                         balance: calculator.getBalance(),
                         path: calculator.getPath().path,
                         currencies: calculator.getPath().currencies,
-                        percentRevenue: Math.floor((calculator.getBalance()[currency] - initial / initial) * 10000) / 100
+                        percentRevenue: Math.floor(((calculator.getBalance()[currency] - initial) / initial) * 10000) / 100
                     });
                 } catch (e) {
                     return this.displayInternalError(e.message);

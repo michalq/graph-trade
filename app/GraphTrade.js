@@ -46,8 +46,7 @@ class Wrapper {
             // Prepare data.
             const apiMarketInfo = data[0],
                 apiTickers = data[1],
-                currenciesCollection = new Currencies(),
-                currencies = currenciesCollection.get();
+                currencies = (new Currencies()).get();
 
             //
             for (let i = 0; i < apiMarketInfo.length; i++) {
@@ -64,16 +63,6 @@ class Wrapper {
                     sellCurrency = ticker.getSellCurrency(),
                     sellPrice = ticker.getSell(),
                     buyPrice = ticker.getBuy();
-
-                if (typeof currencies[buyCurrency] === 'undefined') {
-                    console.log('Cannot find details for [' + buyCurrency.toUpperCase() + '] currency.');
-                    continue;
-                }
-
-                if (typeof currencies[sellCurrency] === 'undefined') {
-                    console.log('Cannot find details for [' + sellCurrency.toUpperCase() + '] currency.');
-                    continue;
-                }
 
                 this.relationsCollection.addRelation(
                     buyCurrency,
