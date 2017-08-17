@@ -6,8 +6,12 @@ class Currencies {
         this.feeder();
     }
 
-    get() {
-        return this.currencies;
+    get(currencyName) {
+        if (typeof this.currencies[currencyName] === 'undefined') {
+            throw new Error('Currency ' + currencyName + 'not found.');
+        }
+
+        return this.currencies[currencyName];
     }
 
     /**

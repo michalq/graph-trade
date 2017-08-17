@@ -6,7 +6,7 @@ class Pair {
      *
      * @return this
      */
-    setBuyCurrencyEntity(buyCurrency) {
+    setBuyCurrency(buyCurrency) {
         this.buyCurrencyEntity = buyCurrency;
 
         return this;
@@ -15,7 +15,7 @@ class Pair {
     /**
      * @return {Currency}
      */
-    getBuyCurrencyEntity() {
+    getBuyCurrency() {
         return this.buyCurrencyEntity;
     }
 
@@ -24,7 +24,7 @@ class Pair {
      *
      * @return this
      */
-    setSellCurrencyEntity(sellCurrency) {
+    setSellCurrency(sellCurrency) {
         this.sellCurrencyEntity = sellCurrency;
 
         return this;
@@ -33,19 +33,8 @@ class Pair {
     /**
      * @return {Currency}
      */
-    getSellCurrencyEntity() {
+    getSellCurrency() {
         return this.sellCurrencyEntity;
-    }
-
-    /**
-     * Sets buy currency.
-     *
-     * @param {String} buyCurrency
-     */
-    setBuyCurrency(buyCurrency) {
-        this.buyCurrency = buyCurrency;
-
-        return this;
     }
 
     /**
@@ -55,35 +44,6 @@ class Pair {
      */
     getName() {
         return this.buyCurrency + '_' + this.sellCurrency;
-    }
-
-    /**
-     * Gets buy currency.
-     *
-     * @return {String}
-     */
-    getBuyCurrency() {
-        return this.buyCurrency;
-    }
-
-    /**
-     * Sets sell currency.
-     *
-     * @param {String} sellCurrency
-     */
-    setSellCurrency(sellCurrency) {
-        this.sellCurrency = sellCurrency;
-
-        return this;
-    }
-
-    /**
-     * Gets sell currency.
-     *
-     * @return {String}
-     */
-    getSellCurrency() {
-        return this.sellCurrency;
     }
 
     /**

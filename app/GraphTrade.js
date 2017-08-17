@@ -46,7 +46,7 @@ class Wrapper {
             // Prepare data.
             const apiMarketInfo = data[0],
                 apiTickers = data[1],
-                currencies = (new Currencies()).get();
+                currencies = new Currencies();
 
             //
             for (let i = 0; i < apiMarketInfo.length; i++) {
@@ -75,20 +75,16 @@ class Wrapper {
                 );
 
                 this.pairsCollection.addPair((new PairEntity)
-                    .setBuyCurrency(buyCurrency)
-                    .setBuyCurrencyEntity(currencies[buyCurrency])
-                    .setSellCurrency(sellCurrency)
-                    .setSellCurrencyEntity(currencies[sellCurrency])
+                    .setBuyCurrency(currencies.get(buyCurrency))
+                    .setSellCurrency(currencies.get(sellCurrency))
                     .setPrice(buyPrice)
                     .setDecimalPlaces(pairDetails.decimal_places)
                     .setFeePercent(pairDetails.fee)
                 );
 
                 this.pairsCollection.addPair((new PairEntity)
-                    .setBuyCurrency(sellCurrency)
-                    .setBuyCurrencyEntity(currencies[sellCurrency])
-                    .setSellCurrency(buyCurrency)
-                    .setSellCurrencyEntity(currencies[buyCurrency])
+                    .setBuyCurrency(currencies.get(sellCurrency))
+                    .setSellCurrency(currencies.get(buyCurrency))
                     .setPrice(1 / sellPrice)
                     .setDecimalPlaces(pairDetails.decimal_places)
                     .setFeePercent(pairDetails.fee)

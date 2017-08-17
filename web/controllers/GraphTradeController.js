@@ -18,7 +18,7 @@ class GraphTradeController extends BaseController {
     }
 
     /**
-     * Returns paths.
+     * Returns all possible paths for given currency and initial value.
      */
     pathsAction(currency, initial) {
         initial = parseFloat(initial);
@@ -57,7 +57,20 @@ class GraphTradeController extends BaseController {
             });
         })
         .catch(err => {
+            console.log(err);
             return this.displayInternalError(err.message);
+        });
+    }
+
+    /**
+     * Returns prices, revenue for given path.
+     */
+    pathAction() {
+        const result = {};
+
+        this.res.statusCode = 200;
+        return this.res.json({
+            path: result
         });
     }
 }

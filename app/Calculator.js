@@ -1,4 +1,4 @@
-const PriveNotValidError = require('./errors/PriceNotValidError'),
+const PriceNotValidError = require('./errors/PriceNotValidError'),
     PriceLeqZero = require('./errors/PriceLeqZero');
 
 /**
@@ -119,22 +119,18 @@ class Calculator {
 
             pairName = currentStrategy.buy + '_' + currentStrategy.sell;
             pair = this.pairs.getPair(pairName);
-            if (typeof pair === 'undefined') {
-                throw new PriveNotValidError(pairName);
-            }
-
             price = pair.getPrice();
             if (price <= 0) {
                 throw new PriceLeqZero(pair);
             }
 
             // Calculate how many can buy for that price.
-            buyDecimalMask = Math.pow(10, pair.getBuyCurrencyEntity().getDecimalPlaces());
+            buyDecimalMask = Math.pow(10, pair.getBuyCurrency().getDecimalPlaces());
             amountToBuy = this.balance[currentStrategy.sell] / price;
             amountToBuy = Math.floor(amountToBuy * buyDecimalMask) / buyDecimalMask;
 
             // Only total price should be rounded.
-            sellDecimalMask = Math.pow(10, pair.getSellCurrencyEntity().getDecimalPlaces());
+            sellDecimalMask = Math.pow(10, pair.getSellCurrency().getDecimalPlaces());
             totalPrice = price * amountToBuy;
             totalPrice = Math.floor(totalPrice * sellDecimalMask) / sellDecimalMask;
 
