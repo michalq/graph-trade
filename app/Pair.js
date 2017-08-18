@@ -54,7 +54,7 @@ class Pair {
     }
 
     /**
-     * Returns human readable name for pair.
+     * Returns human readable name for pair
      *
      * @return {String}
      */
