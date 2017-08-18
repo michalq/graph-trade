@@ -8,7 +8,7 @@ class Currencies {
 
     get(currencyName) {
         if (typeof this.currencies[currencyName] === 'undefined') {
-            throw new Error('Currency ' + currencyName + 'not found.');
+            throw new Error('Currency ' + currencyName + ' not found.');
         }
 
         return this.currencies[currencyName];
@@ -59,7 +59,8 @@ class Currencies {
             xcn: { name: 'xcn', decimalPlaces: 8 },
             xem: { name: 'xem', decimalPlaces: 8 },
             mg: { name: 'mg', decimalPlaces: 8 },
-            zec: { name: 'zec', decimalPlaces: 8}
+            zec: { name: 'zec', decimalPlaces: 8},
+            ven: { name: 'ven', decimalPlaces: 8},
         };
 
         for (let currency in tmp) {

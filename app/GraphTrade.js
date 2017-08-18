@@ -75,6 +75,7 @@ class Wrapper {
                 );
 
                 this.pairsCollection.addPair((new PairEntity)
+                    .setTicker(ticker)
                     .setBuyCurrency(currencies.get(buyCurrency))
                     .setSellCurrency(currencies.get(sellCurrency))
                     .setPrice(buyPrice)
@@ -83,6 +84,7 @@ class Wrapper {
                 );
 
                 this.pairsCollection.addPair((new PairEntity)
+                    .setTicker(ticker)
                     .setBuyCurrency(currencies.get(sellCurrency))
                     .setSellCurrency(currencies.get(buyCurrency))
                     .setPrice(1 / sellPrice)

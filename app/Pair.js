@@ -2,6 +2,22 @@
 
 class Pair {
     /**
+     * @param {Ticker} ticker
+     */
+    setTicker(ticker) {
+        this.ticker = ticker;
+
+        return this;
+    }
+
+    /**
+     * @return {Ticker}
+     */
+    getTicker() {
+        return this.ticker;
+    }
+
+    /**
      * @param {Currency} buyCurrency
      *
      * @return this
@@ -43,7 +59,7 @@ class Pair {
      * @return {String}
      */
     getName() {
-        return this.buyCurrency + '_' + this.sellCurrency;
+        return this.getBuyCurrency().getName() + '_' + this.getSellCurrency().getName();
     }
 
     /**

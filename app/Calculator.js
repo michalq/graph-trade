@@ -144,6 +144,8 @@ class Calculator {
             currentStrategy.buyAmount = amountToBuy;
             currentStrategy.sellAmount = totalPrice;
             currentStrategy.price = price;
+            currentStrategy.originPair = pair.getTicker().getPairName();
+            currentStrategy.tradeUrl = pair.getTicker().getTradeUrl();
 
             if (this.debugMode) {
                 this.debugLogs.push(
