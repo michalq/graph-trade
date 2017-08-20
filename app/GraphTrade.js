@@ -6,7 +6,8 @@ const InfoService = require('../../modules/bterClient/Info'),
     RelationsCollection = require('./Relations'),
     PathFinder = require('./PathFinder'),
     Calculator = require('./Calculator'),
-    PairsHelper = require('./PairsHelper');
+    PairsHelper = require('./PairsHelper'),
+    GraphTradeHelper = require('./GraphTradeHelper');
 
 const PriceLeqZeroError = require('./errors/PriceLeqZero');
 
@@ -63,49 +64,30 @@ class Wrapper {
 
             const foundPaths = pathFinder.getPaths();
 
+            let calculator;
             for (let i = 0; i < foundPaths.length; i++) {
-                this.calculate(foundPaths[i]);
+                try {
+                    calculator = GraphTradeHelper.calculatePath(
+                        this.pairsCollection,
+                        this.owningCurrency,
+                        this.amount,
+                        foundPaths[i]
+                    );
+
+                    if (calculator.isPathValuable()) {
+                        this.valuablePaths.push(calculator);
+                    }
+                } catch(e) {
+                    if (e instanceof PriceLeqZeroError) {
+                        console.log(e.message);
+                    } else {
+                        throw e;
+                    }
+                }
             }
 
             return Promise.resolve(this.valuablePaths);
         });
-    }
-
-    /**
-     * Calculate single path.
-     *
-     * @param {Object} path
-     *
-     * @return {Bool}
-     */
-    calculate(path) {
-        const balance = {};
-        balance[this.owningCurrency] = this.amount;
-
-        const calculator = new Calculator(
-            this.pairsCollection,
-            path,
-            balance
-        );
-        calculator.setDebug(true);
-
-        try {
-            calculator.init();
-        } catch(e) {
-            if (e instanceof PriceLeqZeroError) {
-                console.log(e.message);
-            } else {
-                throw e;
-            }
-
-            return false;
-        }
-
-        if (calculator.isPathValuable()) {
-            this.valuablePaths.push(calculator);
-        }
-
-        return true;
     }
 }
 
