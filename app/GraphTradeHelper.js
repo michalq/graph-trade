@@ -1,4 +1,6 @@
-const Calculator = require('./Calculator');
+const InfoService = require('../../modules/bterClient/Info'),
+    TickersService = require('../../modules/bterClient/Tickers'),
+    Calculator = require('./Calculator');
 
 /**
  * Set of methods.
@@ -34,6 +36,18 @@ class GraphTradeHelper {
         }
 
         return calculator;
+    }
+
+    /**
+     * Fetches whole data.
+     *
+     * @return {Promise}
+     */
+    static fetchData() {
+        return Promise.all([
+            InfoService.fetch(),
+            TickersService.fetch()
+        ]);
     }
 }
 

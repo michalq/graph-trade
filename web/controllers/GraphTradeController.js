@@ -84,11 +84,32 @@ class GraphTradeController extends BaseController {
      * Returns prices, revenue for given path.
      */
     pathAction() {
-        const result = {};
+        const result = {},
+            initialCurrency = 'ltc',
+            initialAmount = 1,
+            path = [];
 
-        this.res.statusCode = 200;
-        return this.res.json({
-            path: result
+       GraphTradeHelper.fetchData().then(data => {
+            const pairsHelper = new PairsHelper(data[0], data[1]);
+            pairsHelper.findPairs();
+
+            let calculator;
+            try {
+                calculator = GraphTradeHelper.calculatePath(
+                    pairsHelper.getPairs(),
+                    initialCurrency,
+                    initialAmount,
+                    path
+                );
+
+                this.res.statusCode = 200;
+                return this.res.json({
+                    path: calculator
+                });
+            } catch(e) {
+                console.log(e);
+                return this.displayInternalError(e.message);
+            }
         });
     }
 }

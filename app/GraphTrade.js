@@ -1,8 +1,6 @@
 "use strict";
 
-const InfoService = require('../../modules/bterClient/Info'),
-    TickersService = require('../../modules/bterClient/Tickers'),
-    PairsCollection = require('./Pairs'),
+const PairsCollection = require('./Pairs'),
     RelationsCollection = require('./Relations'),
     PathFinder = require('./PathFinder'),
     Calculator = require('./Calculator'),
@@ -30,22 +28,10 @@ class Wrapper {
     }
 
     /**
-     * Fetches whole data.
-     *
-     * @return {Promise}
-     */
-    fetchData() {
-        return Promise.all([
-            InfoService.fetch(),
-            TickersService.fetch()
-        ]);
-    }
-
-    /**
      * @return {Promise}
      */
     init(){
-        return this.fetchData().then(data => {
+        return GraphTradeHelper.fetchData().then(data => {
             // Prepare data.
             const apiMarketInfo = data[0],
                 apiTickers = data[1],
