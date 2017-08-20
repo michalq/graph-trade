@@ -23,8 +23,9 @@ class GraphTradeController extends BaseController {
      * @param {String} currency
      * @param {Number} initial
      * @param {String} ignoreCurrencies
+     * @param {Bool} includeFee
      */
-    pathsAction(currency, initial, ignoreCurrencies) {
+    pathsAction(currency, initial, ignoreCurrencies, includeFee) {
         initial = parseFloat(initial);
 
         const graphTrade = new GraphTrade(currency, initial);

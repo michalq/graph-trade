@@ -22,4 +22,13 @@ router.get('/paths/initial/:initial/amount/:amount/ignore/:ignoreCurrencies', (r
     );
 });
 
+router.get('/paths/initial/:initial/amount/:amount/ignore/:ignoreCurrencies/fee/:includeFee', (req, res, next) => {
+    (new GraphTradeController(req, res)).pathsAction(
+        req.params.initial,
+        parseFloat(req.params.amount),
+        req.params.ignoreCurrencies,
+        parseInt(req.params.includeFee) ? true : false
+    );
+});
+
 module.exports = router;
