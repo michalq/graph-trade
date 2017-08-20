@@ -4,17 +4,18 @@ const InfoService = require('../../modules/bterClient/Info'),
     TickersService = require('../../modules/bterClient/Tickers'),
     PairsCollection = require('./Pairs'),
     RelationsCollection = require('./Relations'),
-    PairEntity = require('./Pair'),
-    CurrencyEntity = require('./Currency'),
     PathFinder = require('./PathFinder'),
     Calculator = require('./Calculator'),
-    Currencies = require('./Currencies');
+    PairsHelper = require('./PairsHelper');
 
-// Errors
-const PriceLeqZero = require('./errors/PriceLeqZero');
+const PriceLeqZeroError = require('./errors/PriceLeqZero');
 
 /**
  * Wrap together whole algorithm.
+ *
+ * 1. Fetch information about pairs and trades,
+ * 2. creates possible paths,
+ * 3. calculates
  *
  * @todo this class is ugly and should be refactored.
  */
@@ -22,8 +23,9 @@ class Wrapper {
     constructor(owningCurrency, amount) {
         this.owningCurrency = owningCurrency;
         this.amount = amount;
-        this.pairsCollection = new PairsCollection;
+        this.valuablePaths = [];
         this.relationsCollection = new RelationsCollection;
+        this.pairsCollection = new PairsCollection;
     }
 
     /**
@@ -46,57 +48,12 @@ class Wrapper {
             // Prepare data.
             const apiMarketInfo = data[0],
                 apiTickers = data[1],
-                currencies = new Currencies();
+                pairsHelper = new PairsHelper(apiMarketInfo, apiTickers);
 
-            //
-            for (let i = 0; i < apiMarketInfo.length; i++) {
-                let pairName = Object.keys(apiMarketInfo[i])[0],
-                    pairDetails = apiMarketInfo[i][pairName],
-                    ticker = apiTickers[pairName];
+            pairsHelper.findPairs()
 
-                if (typeof ticker === 'undefined') {
-                    console.log('Omitting ticker for pair ' + pairName + ' is undefined.');
-                    continue;
-                }
-
-                let buyCurrency = ticker.getBuyCurrency(),
-                    sellCurrency = ticker.getSellCurrency(),
-                    sellPrice = ticker.getSell(),
-                    buyPrice = ticker.getBuy();
-
-                this.relationsCollection.addRelation(
-                    buyCurrency,
-                    sellCurrency
-                );
-
-                this.relationsCollection.addRelation(
-                    sellCurrency,
-                    buyCurrency
-                );
-
-                this.pairsCollection.addPair((new PairEntity)
-                    .setTicker(ticker)
-                    .setBuyCurrency(currencies.get(buyCurrency))
-                    .setSellCurrency(currencies.get(sellCurrency))
-                    .setPrice(buyPrice)
-                    .setDecimalPlaces(pairDetails.decimal_places)
-                    .setFeePercent(pairDetails.fee)
-                );
-
-                this.pairsCollection.addPair((new PairEntity)
-                    .setTicker(ticker)
-                    .setBuyCurrency(currencies.get(sellCurrency))
-                    .setSellCurrency(currencies.get(buyCurrency))
-                    .setPrice(1 / sellPrice)
-                    .setDecimalPlaces(pairDetails.decimal_places)
-                    .setFeePercent(pairDetails.fee)
-                );
-            }
-
-            // Prepare path finder.
-            if (!this.relationsCollection.count()) {
-                throw new Error('Relations collection is empty.');
-            }
+            this.relationsCollection = pairsHelper.getRelations();
+            this.pairsCollection = pairsHelper.getPairs();
 
             const pathFinder = new PathFinder(this.relationsCollection);
 
@@ -104,43 +61,51 @@ class Wrapper {
             pathFinder.setDestination(this.owningCurrency);
             pathFinder.init();
 
-            // Run calculator.
-            let calculator,
-                balance,
-                valuablePaths = [];
-
             const foundPaths = pathFinder.getPaths();
 
             for (let i = 0; i < foundPaths.length; i++) {
-                balance = {};
-                balance[this.owningCurrency] = this.amount;
-
-                calculator = new Calculator(
-                    this.pairsCollection,
-                    foundPaths[i],
-                    balance
-                );
-                calculator.setDebug(true);
-
-                try {
-                    calculator.init();
-                } catch(e) {
-                    if (e instanceof PriceLeqZero) {
-                        console.log(e.message);
-                    } else {
-                        throw e;
-                    }
-
-                    continue;
-                }
-
-                if (calculator.isPathValuable()) {
-                    valuablePaths.push(calculator);
-                }
+                this.calculate(foundPaths[i]);
             }
 
-            return Promise.resolve(valuablePaths);
+            return Promise.resolve(this.valuablePaths);
         });
+    }
+
+    /**
+     * Calculate single path.
+     *
+     * @param {Object} path
+     *
+     * @return {Bool}
+     */
+    calculate(path) {
+        const balance = {};
+        balance[this.owningCurrency] = this.amount;
+
+        const calculator = new Calculator(
+            this.pairsCollection,
+            path,
+            balance
+        );
+        calculator.setDebug(true);
+
+        try {
+            calculator.init();
+        } catch(e) {
+            if (e instanceof PriceLeqZeroError) {
+                console.log(e.message);
+            } else {
+                throw e;
+            }
+
+            return false;
+        }
+
+        if (calculator.isPathValuable()) {
+            this.valuablePaths.push(calculator);
+        }
+
+        return true;
     }
 }
 

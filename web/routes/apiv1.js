@@ -31,4 +31,8 @@ router.get('/paths/initial/:initial/amount/:amount/ignore/:ignoreCurrencies/fee/
     );
 });
 
+router.post('/path', (req, res, next) => {
+    (new GraphTradeController(req, res)).pathAction();
+});
+
 module.exports = router;
