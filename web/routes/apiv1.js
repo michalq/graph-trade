@@ -8,7 +8,18 @@ router.get('/pairs', (req, res, next) => {
 });
 
 router.get('/paths/initial/:initial/amount/:amount', (req, res, next) => {
-    (new GraphTradeController(req, res)).pathsAction(req.params.initial, req.params.amount);
+    (new GraphTradeController(req, res)).pathsAction(
+        req.params.initial,
+        parseFloat(req.params.amount)
+    );
+});
+
+router.get('/paths/initial/:initial/amount/:amount/ignore/:ignoreCurrencies', (req, res, next) => {
+    (new GraphTradeController(req, res)).pathsAction(
+        req.params.initial,
+        parseFloat(req.params.amount),
+        req.params.ignoreCurrencies
+    );
 });
 
 module.exports = router;

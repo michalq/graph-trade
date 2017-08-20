@@ -61,6 +61,7 @@ class Currencies {
             mg: { name: 'mg', decimalPlaces: 8 },
             zec: { name: 'zec', decimalPlaces: 8},
             ven: { name: 'ven', decimalPlaces: 8},
+            doc: { name: 'doc', decimalPlaces: 8},
         };
 
         for (let currency in tmp) {

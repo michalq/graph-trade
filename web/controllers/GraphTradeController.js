@@ -19,11 +19,19 @@ class GraphTradeController extends BaseController {
 
     /**
      * Returns all possible paths for given currency and initial value.
+     *
+     * @param {String} currency
+     * @param {Number} initial
+     * @param {String} ignoreCurrencies
      */
-    pathsAction(currency, initial) {
+    pathsAction(currency, initial, ignoreCurrencies) {
         initial = parseFloat(initial);
 
         const graphTrade = new GraphTrade(currency, initial);
+        let ignoreCurr = [];
+        if (typeof ignoreCurrencies !== 'undefined' && ignoreCurrencies.length) {
+            ignoreCurr = ignoreCurrencies.split(',');
+        }
 
         graphTrade
         .init()
@@ -32,10 +40,19 @@ class GraphTradeController extends BaseController {
                 return this.displayNotFound('No data found.');
             }
 
-            let calculator;
+            let calculator, currencies;
             const result = [];
+
+            main:
             for (let i = 0; i < paths.length; i++) {
                 calculator = paths[i];
+                currencies = calculator.getPath().currencies;
+
+                for (let j = 0; j < ignoreCurr.length; j++) {
+                    if (-1 !== currencies.indexOf(ignoreCurr[j])) {
+                        continue main;
+                    }
+                }
 
                 try {
                     result.push({

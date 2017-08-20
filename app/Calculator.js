@@ -112,14 +112,22 @@ class Calculator {
             pair,
             pairName,
             buyDecimalMask,
-            sellDecimalMask;
+            sellDecimalMask,
+            fee;
 
+        const includeFee = true;
         for (let i = 0; i < this.path.path.length; i++) {
+            fee = 0.2 / 100;
             currentStrategy = this.path.path[i];
 
             pairName = currentStrategy.buy + '_' + currentStrategy.sell;
             pair = this.pairs.getPair(pairName);
+
             price = pair.getPrice();
+            if (includeFee) {
+                price += pair.getPrice() * fee;
+            }
+
             if (price <= 0) {
                 throw new PriceLeqZero(pair);
             }
@@ -146,6 +154,12 @@ class Calculator {
             currentStrategy.price = price;
             currentStrategy.originPair = pair.getTicker().getPairName();
             currentStrategy.tradeUrl = pair.getTicker().getTradeUrl();
+
+            currentStrategy.fee = {
+                percent: (fee * 100),
+                amount: (price * fee),
+                included: includeFee
+            };
 
             if (this.debugMode) {
                 this.debugLogs.push(
