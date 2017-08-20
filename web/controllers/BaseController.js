@@ -7,6 +7,14 @@ class BaseController
     }
 
     /**
+     * @param {Object} msg
+     */
+    displayOk(msg) {
+        this.res.statusCode = 200;
+        this.res.json();
+    }
+
+    /**
      *
      * @param  {String} msg [description]
      */
