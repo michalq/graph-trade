@@ -2,6 +2,8 @@
 
 const BaseController = require('./BaseController');
 const GraphTrade = require('../../app/GraphTrade');
+const GraphTradeHelper = require('../../app/GraphTradeHelper');
+const PairsHelper = require('../../app/PairsHelper');
 
 /**
  * Class to manage graph trade loop.
@@ -61,7 +63,7 @@ class GraphTradeController extends BaseController {
                         balance: calculator.getBalance(),
                         path: calculator.getPath().path,
                         currencies: calculator.getPath().currencies,
-                        percentRevenue: Math.floor(((calculator.getBalance()[currency] - initial) / initial) * 10000) / 100
+                        percentRevenue: calculator.getPercentRevenue()
                     });
                 } catch (e) {
                     return this.displayInternalError(e.message);
@@ -85,16 +87,26 @@ class GraphTradeController extends BaseController {
      */
     pathAction() {
         const initialCurrency = 'ltc',
-            initialAmount = 1,
-            path = [
+            initialAmount = 1;
+        // const body = this.req.body;
+        const body = {
+            path: [
                 {buy: 'cny', sell: 'ltc'},
                 {buy: 'bat', sell: 'cny'},
                 {buy: 'eth', sell: 'bat'},
                 {buy: 'btc', sell: 'eth'},
                 {buy: 'ltc', sell: 'btc'},
-            ];
+            ],
+        };
 
-       GraphTradeHelper.fetchData().then(data => {
+        let path;
+        try {
+            path = this.processInput(body);
+        } catch (e) {
+            return this.displayBadRequest(e.message);
+        }
+
+        GraphTradeHelper.fetchData().then(data => {
             const pairsHelper = new PairsHelper(data[0], data[1]);
             pairsHelper.findPairs();
 
@@ -108,13 +120,48 @@ class GraphTradeController extends BaseController {
                 );
 
                 return this.displayOk({
-                    path: calculator
+                    data: {
+                        balance: calculator.getBalance(),
+                        path: calculator.getPath().path,
+                        currencies: calculator.getPath().currencies,
+                        percentRevenue: calculator.getPercentRevenue()
+                    }
                 });
             } catch(e) {
                 console.log(e);
                 return this.displayInternalError(e.message);
             }
+        }).catch(e => {
+            return this.displayInternalError(e.message);
         });
+    }
+
+    /**
+     * Checks if user provide proper input.
+     *
+     * @param {Object} body
+     *
+     * @return {Bool}
+     */
+    processInput(body) {
+        if (typeof body.data === 'undefined') {
+            throw new Error('Wrong input.');
+        }
+
+        body.currencies = [];
+        for (let i = 0; i < body.data.length; i++) {
+            if (typeof body.data[i].buy === 'undefined') {
+                throw new Error('Not found buy currency in step ' + i);
+            }
+
+            if (typeof body.data[i].sell === 'undefined') {
+                throw new Error('Not found sell currency in step ' + i);
+            }
+
+            if ()
+        }
+
+        return body;
     }
 }
 

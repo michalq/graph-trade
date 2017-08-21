@@ -100,6 +100,17 @@ class Calculator {
     }
 
     /**
+     * Returns percent revenue after path calculations.
+     *
+     * @return {Number}
+     */
+    getPercentRevenue() {
+        const initial = this.getInitialBalance()[this.testedCurrency];
+
+        return Math.floor(((this.getBalance()[this.testedCurrency] - initial) / initial) * 10000) / 100;
+    }
+
+    /**
      * Run calculation.
      *
      * @return {this}

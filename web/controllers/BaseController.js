@@ -11,7 +11,7 @@ class BaseController
      */
     displayOk(msg) {
         this.res.statusCode = 200;
-        this.res.json();
+        this.res.json(msg);
     }
 
     /**
