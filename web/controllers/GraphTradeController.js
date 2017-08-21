@@ -87,17 +87,8 @@ class GraphTradeController extends BaseController {
      */
     pathAction() {
         const initialCurrency = 'ltc',
-            initialAmount = 1;
-        // const body = this.req.body;
-        const body = {
-            path: [
-                {buy: 'cny', sell: 'ltc'},
-                {buy: 'bat', sell: 'cny'},
-                {buy: 'eth', sell: 'bat'},
-                {buy: 'btc', sell: 'eth'},
-                {buy: 'ltc', sell: 'btc'},
-            ],
-        };
+            initialAmount = 1,
+            body = this.req.body;
 
         let path;
         try {
