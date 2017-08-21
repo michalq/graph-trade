@@ -144,21 +144,23 @@ class GraphTradeController extends BaseController {
      * @return {Bool}
      */
     processInput(body) {
-        if (typeof body.data === 'undefined') {
-            throw new Error('Wrong input.');
+        if (typeof body.path === 'undefined') {
+            throw new Error('Wrong input. Missing data.');
         }
 
         body.currencies = [];
-        for (let i = 0; i < body.data.length; i++) {
-            if (typeof body.data[i].buy === 'undefined') {
+        for (let i = 0; i < body.path.length; i++) {
+            if (typeof body.path[i].buy === 'undefined') {
                 throw new Error('Not found buy currency in step ' + i);
             }
 
-            if (typeof body.data[i].sell === 'undefined') {
+            if (typeof body.path[i].sell === 'undefined') {
                 throw new Error('Not found sell currency in step ' + i);
             }
 
-            if ()
+            if (-1 === body.currencies.indexOf(body.path[i].buy)) {
+                body.currencies.push(body.path[i].buy);
+            }
         }
 
         return body;
