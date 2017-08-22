@@ -59,6 +59,7 @@ class GraphTradeController extends BaseController {
 
                 try {
                     result.push({
+                        guid: calculator.getPathGuid(),
                         logs: calculator.getDebugLogs(),
                         balance: calculator.getBalance(),
                         path: calculator.getPath().path,
@@ -112,6 +113,7 @@ class GraphTradeController extends BaseController {
 
                 return this.displayOk({
                     data: {
+                        guid: calculator.getPathGuid(),
                         balance: calculator.getBalance(),
                         path: calculator.getPath().path,
                         currencies: calculator.getPath().currencies,

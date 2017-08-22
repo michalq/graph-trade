@@ -1,5 +1,7 @@
 const PriceNotValidError = require('./errors/PriceNotValidError'),
-    PriceLeqZero = require('./errors/PriceLeqZero');
+    PriceLeqZero = require('./errors/PriceLeqZero'),
+    Crypto = require('crypto');
+
 
 /**
  *
@@ -40,6 +42,17 @@ class Calculator {
 
         /** @type {Array} Debug logs. */
         this.debugLogs = [];
+    }
+
+    /**
+     * @return {String} Hashed path.
+     */
+    getPathGuid() {
+        const str = JSON.stringify(this.path.path);
+        const secret = 'fdsafr4532543tfdsgfds';
+        return Crypto.createHmac('sha256', secret)
+            .update(str)
+            .digest('hex');
     }
 
     /**
