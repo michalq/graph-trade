@@ -48,10 +48,14 @@ class Calculator {
      * @return {String} Hashed path.
      */
     getPathGuid() {
-        const str = JSON.stringify(this.path.path);
+        let path = [];
+        for (let i =0; i < this.path.path.length; i++) {
+            path += this.path.path[i].buy + '_' + this.path.path[i].sell + ',';
+        }
+
         const secret = 'fdsafr4532543tfdsgfds';
         return Crypto.createHmac('sha256', secret)
-            .update(str)
+            .update(path)
             .digest('hex');
     }
 
