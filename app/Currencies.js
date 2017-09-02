@@ -63,6 +63,14 @@ class Currencies {
             ven: { name: 'ven', decimalPlaces: 8},
             doc: { name: 'doc', decimalPlaces: 8},
             oax: { name: 'oax', decimalPlaces: 8},
+            zrx: { name: 'zrx', decimalPlaces: 8},
+            dnt: { name: 'dnt', decimalPlaces: 8},
+            llt: { name: 'llt', decimalPlaces: 8},
+            dpy: { name: 'dpy', decimalPlaces: 8},
+            ubc: { name: 'ubc', decimalPlaces: 8},
+            lrc: { name: 'lrc', decimalPlaces: 8},
+            pst: { name: 'pst', decimalPlaces: 8},
+            tnt: { name: 'tnt', decimalPlaces: 8},
         };
 
         for (let currency in tmp) {
